@@ -72,8 +72,7 @@ const translate = (languagePair, text) => {
         );
       }
     });
-  }
-  if (languagePair === "british-to-american") {
+  } else {
     const dictArray = [americanToBritishSpelling, americanToBritishTitles];
     dictArray.forEach((dictionary) => {
       for (const [american, british] of Object.entries(dictionary)) {
@@ -103,7 +102,22 @@ const translate = (languagePair, text) => {
       );
     }
   }
-  console.log(text);
+
+  const timeRegex = /(([0-9]|0[0-9]|1[0-9]|2[0-3])(:|\.)([0-5][0-9]))/g;
+  let times = text.match(timeRegex);
+  console.log("times: ", times);
+  if (times) {
+    times.forEach((time) => {
+      if (languagePair === "american-to-british") {
+        const newTime = time.replace(":", ".");
+        text = text.replace(time, `<span class='highlight'>${newTime}</span>`);
+      } else {
+        const newTime = time.replace(".", ":");
+        text = text.replace(time, `<span class='highlight'>${newTime}</span>`);
+      }
+    });
+  }
+  console.log("innerHTML:", text);
   translatedSentenceDiv.innerHTML = text;
 };
 
