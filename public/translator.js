@@ -21,7 +21,7 @@ localeSelect.addEventListener("change", () => {
 
 translateButton.addEventListener("click", () => {
   const text = textInput.value;
-  translate(languagePair, text);
+  translateText(languagePair, text);
 });
 
 clearButton.addEventListener("click", () => {
@@ -31,7 +31,7 @@ clearButton.addEventListener("click", () => {
 });
 
 // translate function
-function translate(languagePair, text) {
+function translateText(languagePair, text) {
   // first reset previous translations messages:
   errorMsgDiv.innerText = "";
 
@@ -40,7 +40,9 @@ function translate(languagePair, text) {
 
   // handle no text
   if (!text) {
-    return (errorMsgDiv.innerText = "Error: No text to translate.");
+    const message = "Error: No text to translate.";
+    errorMsgDiv.innerText = message;
+    return message;
   }
 
   if (languagePair === "american-to-british") {
@@ -129,10 +131,16 @@ function translate(languagePair, text) {
 
   // handle correct output
   if (sourceText === text) {
-    translatedSentenceDiv.innerHTML = "Everything looks good to me!";
+    const message = "Everything looks good to me!";
+
+    translatedSentenceDiv.innerHTML = message;
+    return message;
   } else {
     translatedSentenceDiv.innerHTML = text;
   }
+
+  // for testing purpose:
+  return text;
 }
 
 /* 
@@ -141,5 +149,5 @@ function translate(languagePair, text) {
   the client side
 */
 try {
-  module.exports = {};
+  module.exports = { translateText };
 } catch (e) {}
