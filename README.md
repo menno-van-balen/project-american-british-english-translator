@@ -1,7 +1,8 @@
-**freeCodeCamp** - Quality Assurance 5: American / British English Translator
-------
+## **freeCodeCamp** - Quality Assurance 5: American / British English Translator
 
-[![Run on Repl.it](https://repl.it/badge/github/freeCodeCamp/boilerplate-project-american-british-english-translator)](https://repl.it/github/freeCodeCamp/boilerplate-project-american-british-english-translator)
+[See and Run on Repl.it](https://repl.it/@mennovanbalen/project-american-british-english-translator)
+
+[Run it](https://project-american-british-english-translator.mennovanbalen.repl.co)
 
 ### User stories:
 
@@ -18,7 +19,7 @@
 
 ### Testing and additional notes
 
-* All logic can go into `public/translator.js`.
-* Create all of the unit/functional tests in `tests/1_unit-tests.js` and `tests/2_functional-tests.js`.
-* To run the tests on Repl.it, set NODE_ENV to test without quotes in the .env file.
-* To run the tests in the console, use the command npm run test. To open the Repl.it console, press Ctrl+Shift+P (Cmd if on a Mac) and type "open shell".
+- All logic can go into `public/translator.js`.
+- Create all of the unit/functional tests in `tests/1_unit-tests.js` and `tests/2_functional-tests.js`.
+- To run the tests on Repl.it, set NODE_ENV to test without quotes in the .env file.
+- To run the tests in the console, use the command npm run test. To open the Repl.it console, press Ctrl+Shift+P (Cmd if on a Mac) and type "open shell".
