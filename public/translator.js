@@ -24,12 +24,17 @@ function translate(languagePair, text) {
   const sourceText = text;
   // console.log("languagePair: " + languagePair);
   // console.log("text: " + text);
+  const startWithCapital = /^[A-Z]/;
 
   if (languagePair === "american-to-british") {
     const dictArray = [americanOnly, americanToBritishSpelling];
     dictArray.forEach((dictionary) => {
-      for (const [american, british] of Object.entries(dictionary)) {
+      for (let [american, british] of Object.entries(dictionary)) {
         const americanReg = new RegExp(`\\b${american}\\b`, "gi");
+        const word = text.match(americanReg);
+        if (word && startWithCapital.test(word[0])) {
+          british = british.charAt(0).toUpperCase() + british.slice(1);
+        }
         text = text.replace(
           americanReg,
           `<span class="highlight">${british}</span>`
@@ -51,45 +56,43 @@ function translate(languagePair, text) {
       }
     });
   } else {
-    for (const [british, american] of Object.entries(britishOnly)) {
+    for (let [british, american] of Object.entries(britishOnly)) {
       const britishReg = new RegExp(`\\b${british}\\b`, "gi");
+      const word = text.match(britishReg);
+      if (word && startWithCapital.test(word[0])) {
+        american = american.charAt(0).toUpperCase() + american.slice(1);
+      }
       text = text.replace(
         britishReg,
         `<span class="highlight">${american}</span>`
       );
     }
-    for (const [american, british] of Object.entries(
-      americanToBritishSpelling
-    )) {
-      const britishReg = new RegExp(`\\b${british}\\b`, "gi");
-      text = text.replace(
-        britishReg,
-        `<span class="highlight">${american}</span>`
-      );
-    }
-    for (const [american, british] of Object.entries(americanToBritishTitles)) {
-      text = text.replace(
-        `${british}`,
-        `<span class="highlight">${american}</span>`
-      );
-      text = text.replace(
-        `${british.charAt(0).toUpperCase() + british.slice(1)}`,
-        `<span class="highlight">${
-          american.charAt(0).toUpperCase() + american.slice(1)
-        }</span>`
-      );
-    }
+
+    const dictArray = [americanToBritishSpelling, americanToBritishTitles];
+    dictArray.forEach((dictionary) => {
+      for (let [american, british] of Object.entries(dictionary)) {
+        const britishReg = new RegExp(`\\b${british}\\b`, "gi");
+        const word = text.match(britishReg);
+        if (word && startWithCapital.test(word[0])) {
+          american = american.charAt(0).toUpperCase() + american.slice(1);
+        }
+        text = text.replace(
+          britishReg,
+          `<span class="highlight">${american}</span>`
+        );
+      }
+    });
   }
 
   const timeRegex = /(([0-9]|0[0-9]|1[0-9]|2[0-3])(:|\.)([0-5][0-9]))/g;
   const times = text.match(timeRegex);
-  console.log("times: ", times);
   if (times) {
     times.forEach((time) => {
-      if (languagePair === "american-to-british") {
+      if (languagePair === "american-to-british" && time.includes(":")) {
         const newTime = time.replace(":", ".");
         text = text.replace(time, `<span class='highlight'>${newTime}</span>`);
-      } else {
+      }
+      if (languagePair === "british-to-american" && time.includes(".")) {
         const newTime = time.replace(".", ":");
         text = text.replace(time, `<span class='highlight'>${newTime}</span>`);
       }
@@ -99,7 +102,7 @@ function translate(languagePair, text) {
   if (sourceText === text) {
     translatedSentenceDiv.innerHTML = "Everything looks good to me!";
   } else {
-    console.log("innerHTML:", text);
+    // console.log("innerHTML:", text);
     translatedSentenceDiv.innerHTML = text;
   }
 }
